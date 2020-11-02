@@ -1,2 +1,2 @@
-# MAX-functionalConnectivity
-Progression of functional connectivity analysis using MAX data
+# On-going projects
+Documentation of projects I'm working on in the Laboratory of Cognition and Emotion. 
