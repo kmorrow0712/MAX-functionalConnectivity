@@ -46,8 +46,10 @@ With the baseline model extracted, we now need to subtract it from preprocessed 
     3dROIstats -quiet -overwrite -mask /data/bswift-1/kmorrow/02-ROI_masks/SUIT_cerebellum_2mm/SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz $output"MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz" > \
     $output"MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D"
 
-  <img src="/assets/images/gPPI-seedTimeseries-example.png" width="400" height="300" /> <br>
-_Example of extracted time series for left Crus II ROI from MAX101_
+<fig>
+  <img src="/assets/images/gPPI-seedTimeseries-example.png" width="400" height="300" />
+  <figcaption>Example of extracted time series for left Crus II ROI from MAX101</figcaption>
+</fig>
 
 ### 4. Create boxcar functions and upsample each regressor of interest
 
@@ -69,8 +71,10 @@ _Reminder that these scripts are generally in a loop which can be seen in full i
 
     timing_tool.py -timing $proj_path/stim_times/"$regressors[$regressor_index]".txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX"$i_subj"/gPPI/"$regressors[$regressor_index]_upsample.txt" -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425
 
+<fig>
   <img src="/assets/images/gPPI-upsampledReg-example.png" width="400" height="300" />  <br>
-_Example of regressor upsampled to 0.05 TR. False neutral threat (FNT)_
+  <figcaption>Example of regressor upsampled to 0.05 TR. False neutral threat (FNT)</figcaption>
+</fig>
 
 
 ### 5. Get seed region data per run
@@ -86,16 +90,19 @@ Upsample to the same rate as the regressors in step #4 (0.05)
 
     1dUpsample "$UpSampRate" "$seed_names[$seed_index]"_Seed_perRun.1D > "$seed_names[$seed_index]"_Seed_perRun_upsample.1D
 
-  <img src="/assets/images/gPPI-seedPerRunUpsample-example.png" width="400" height="300" />  <br>
-_Seed data upsampled to 0.05s TR_
+<fig>
+  <img src="/assets/images/gPPI-seedPerRunUpsample-example.png" width="400" height="300" />
+<figcaption>Seed data upsampled to 0.05s TR</figcaption>
+</fig>
 
 ### 7a. Create gamma function
 Resembles the hemodynamic response function at the new upsampled TR (0.05s)
 
     Waver -dt 0.05 -GAM -inline 1@1 > GammaHR_TR05.1D
-
-  <img src="/assets/images/gPPI-gammaFunction.png" width="400" height="300" /> <br>
-_Gamma function to deconvolve seed timeseries_
+<fig>
+  <img src="/assets/images/gPPI-gammaFunction.png" width="400" height="300" />
+  <figcaption>Gamma function to deconvolve seed timeseries</figcaption>
+</fig>
 
 ### 7b. Deconvolve seed time seed timeseries with gamma function
 
@@ -131,5 +138,7 @@ _Gamma function to deconvolve seed timeseries_
 
     1dcat "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_perRun_upsampleT.1D'{0..$(25)}' >> "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_allRuns.1D``
 
-  <img src="/assets/images/gPPI-interactionTerm_FNT-example.png" width="400" height="300" />  <br>
-_Example of interaction term for False neutral threat (FNT) condition_
+<fig>
+  <img src="/assets/images/gPPI-interactionTerm_FNT-example.png" width="400" height="300" />
+<figcaption>Example of interaction term for False neutral threat (FNT) condition</figcaption>
+</fig>
