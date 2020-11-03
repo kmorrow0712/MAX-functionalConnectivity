@@ -9,7 +9,6 @@ MAX (N = 5)
 ### Seed region(s)
 #### left Crus II (cerebellum)
 `SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz` <br>
-
 **transformations**
 1. Crus II multipled with [Buckner et al's](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3214121/) cognitive control network.
 2.    Intersection then multiplied with a [SUIT](http://www.diedrichsenlab.org/imaging/suit.htm) gray matter mask.
