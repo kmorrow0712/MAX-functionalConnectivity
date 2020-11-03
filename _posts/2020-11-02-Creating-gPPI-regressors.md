@@ -1,7 +1,9 @@
-
-# Create gPPI regressors -- practice
 ---
-<<<<<<< HEAD
+layout: post
+title: "Creating gPPI interaction terms (practice)"
+date: 2020-11-02
+---
+
 ### Relevant details
 
 #### Dataset
