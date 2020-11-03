@@ -24,36 +24,12 @@ AFNI
 #### Goal
 Practice generating general psychophysiological interaction (gPPI) terms to explore functional connectivity between seed regions and all other voxels of the brain and how this relationship relates to task. </br>
 
-#### Info
-=======
-## Relevant details 
-
-### Dataset
-MAX (N = 5) 
-
-### Seed region(s)
-#### left Crus II (cerebellum) <br>
-`SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz` <br>
-
-**transformations** 
-1. Crus II multipled with [Buckner et al's](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3214121/) cognitive control network. 
-2.    Intersection then multiplied with a [SUIT](http://www.diedrichsenlab.org/imaging/suit.htm) gray matter mask.  
-
-
-### Programs utilized 
-AFNI 
-
-### Goal
-Practice generating general psychophysiological interaction (gPPI) terms to explore functional connectivity between seed regions and all other voxels of the brain and how this relationship relates to task. </br>
-
 ### Info
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
  Scripts and data files are described below. Each step is documented with output images or examples when applicable. Very small group of subjects used with a simple analysis in mind (for now...). <br>
  _All scripts shown are shell script and show typical shell shortcuts e.g., `"$subj"`_
 
 ---
 
-<<<<<<< HEAD
 ### Extract timeseries from seed region(s)
 
 ##### 1. Extract baseline from first level subject data
@@ -69,38 +45,17 @@ With the baseline model extracted, we now need to subtract it from preprocessed 
 
 `` 3dcalc -a $proj_path"/dataset/preproc/MAX"$subj"/func2/ICA_AROMA/MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" -b ./"MAX"$subj_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz -prefix "$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz -expr 'a-b' -overwrite ``
 
-##### 3. Extract time series from seed region
-=======
-## Extract timeseries from seed region(s)
+### 3. Extract time series from seed region & no baseline data
 
-### 1. Extract baseline from first level subject data
-
-First, need to extract the baseline which includes drifts, motion, and motion derivatives as output from `3dDeconvolve` using `3dSynthesize`
-
-``3dSynthesize -cbucket ./MAX"$subj"_Main_block_MR_REML_beta_shockcensored_I.nii.gz 
--matrix ./"MAX"$subj"_Main_block_MR_uncensored_I.x1D" -select baseline -overwrite 
--prefix "$output"/MAX/"$subj"_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz``
-
-### 2. Subtract baseline from preprocssed functional data
-With the baseline model extracted, we now need to subtract it from preprocessed functional data using `3dcalc` 
-
-`` 3dcalc -a $proj_path"/dataset/preproc/MAX"$subj"/func2/ICA_AROMA/MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" -b ./"MAX"$subj_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz -prefix "$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz -expr 'a-b' -overwrite ``
-
-### 3. Extract time series from seed region
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
 ``3dROIstats -quiet -overwrite -mask /data/bswift-1/kmorrow/02-ROI_masks/SUIT_cerebellum_2mm/SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz $output"MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz" > \
 $output"MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D"``
 
-![extracted time series](../images/gPPI-seedTimeseries-example.png)
+![extracted time series](/assets/images/gPPI-seedTimeseries-example.png)
 _Example of extracted time series for left Crus II ROI from MAX101_
 
-<<<<<<< HEAD
-##### 4. Create boxcar functions and upsample each regressor of interest
-=======
 ### 4. Create boxcar functions and upsample each regressor of interest
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
 
-For the sake of this simple analysis, we'll create interaction terms for threat and safe blocks following positive and neutral mood induction. Only blocks where participants _were not_ shocked/stimulated will be used.
+For the sake of this simple analysis, we'll create interaction terms for threat and safe blocks following positive and neutral mood induction. Only blocks where participants were _not_ shocked/stimulated will be used.
 
 Codes are as follows:<br>
 `FNT` - false neutral threat <br>
@@ -118,114 +73,75 @@ _Reminder that these scripts are generally in a loop which can be seen in full i
 
 ``timing_tool.py -timing $proj_path/stim_times/"$regressors[$regressor_index]".txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX"$i_subj"/gPPI/"$regressors[$regressor_index]_upsample.txt" -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425``
 
-![upsampled regressor](../images/gPPI-upsampledReg-example.png)
+![upsampled regressor](/assets/images/gPPI-upsampledReg-example.png)
 _Example of regressor upsampled to 0.05 TR. False neutral threat (FNT)_
 
 
-<<<<<<< HEAD
-##### 5. Get seed region data per run
-Shell script loops through each run based on start and ending index.
-=======
 ### 5. Get seed region data per run
 Shell script loops through each run based on start and ending index. 
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
 
 `start_index1 = run index * 340`
 `end_index1 = (run index * 340) + (340 - 1) `
 
 ``1dcat /data/bswift-1/kmorrow/03-gPPI_testing/output/"MAX"$i_subj"_l-CrusII_seed_NoBaseline_avg.1D'($start_index1..$end_index1}[0]'" > "$seed_names[$seed_index]"_Seed_perRun.1D``
 
-<<<<<<< HEAD
-##### 6. Upsample seed data
-=======
+
 ### 6. Upsample seed data 
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
+
 Upsample to the same rate as the regressors in step #4 (0.05)
 
 ``1dUpsample "$UpSampRate" "$seed_names[$seed_index]"_Seed_perRun.1D > "$seed_names[$seed_index]"_Seed_perRun_upsample.1D``
 
-![upsampled seed data](../images/gPPI-seedPerRunUpsample-example.png)
+![upsampled seed data](/assets/images/gPPI-seedPerRunUpsample-example.png)
 _Seed data upsampled to 0.05s TR_
 
-<<<<<<< HEAD
-##### 7a. Create gamma function
-=======
+
 ### 7a. Create gamma function
 >>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
 Resembles the hemodynamic response function at the new upsampled TR (0.05s)
 
 ``Waver -dt 0.05 -GAM -inline 1@1 > GammaHR_TR05.1D``
 
-![Gamma function](../images/gPPI-gammaFunction.png)
+![Gamma function](/assets/images/gPPI-gammaFunction.png)
 _Gamma function to deconvolve seed timeseries_
 
-<<<<<<< HEAD
-##### 7b. Deconvolve seed time seed timeseries with gamma function
 
+#### 7b. Deconvolve seed time seed timeseries with gamma function
 
 ``3dTfitter -RHS "$seed_names[$seed_index]"_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D 012 -2``
 
 ``1dtranspose "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D > "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D``
 
-##### 8. De-mean neuronal timeseries
-=======
 ### 7b. Deconvolve seed time seed timeseries with gamma function
 
-
-``3dTfitter -RHS "$seed_names[$seed_index]"_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D 012 -2``
-			
-``1dtranspose "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D > "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D``
-
-### 8. De-mean neuronal timeseries
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
 ``1d_tool.py -infile "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D -demean -write  "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D ``
 
-![Demeaned seed neuronal timeseries](../images/gPPI-seedTimeseriesUpsampled_demeaned.png)
+![Demeaned seed neuronal timeseries](/assets/images/gPPI-seedTimeseriesUpsampled_demeaned.png)
 
-<<<<<<< HEAD
-##### 9. Create interaction terms for each condition
-=======
 ### 9. Create interaction terms for each condition
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
 
 ``1dcat $out_path/dataset/regressors/MAX"$i_subj"/gPPI/""$regressors[$regressor_index]"_upsample.txt'{$start_index2..$end_index2}'" > tmp.1D``
 
 ``1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D``
 
-<<<<<<< HEAD
 ``1deval -a "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D
 -b tmp_demean.1D
 -expr 'a*b’ > "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D``
 
-##### 10. Convolve newly created terms with canonical HRF
+### 10. Convolve newly created terms with canonical HRF
 
 ``waver -GAM
 -peak 1
 -TR $sub_TR
 -input "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D -numout $noOfVol_perRun_upsample >  "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_perRun_upsampleT.1D``
 
-##### 11. Downsample to original TR (1.25s)
+### 11. Downsample to original TR (1.25s)
 =======
 ``1deval -a "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D 
 -b tmp_demean.1D 
 -expr 'a*b’ > "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D``
 
-### 10. Convolve newly created terms with canonical HRF
 
-``waver -GAM 
--peak 1 
--TR $sub_TR 
--input "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D -numout $noOfVol_perRun_upsample >  "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_perRun_upsampleT.1D``
-
-### 11. Downsample to original TR (1.25s)
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
-
-``1dcat "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_perRun_upsampleT.1D'{0..$(25)}' >> "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_allRuns.1D``
-
-![Interaction term FNT](../images/gPPI-interactionTerm_FNT-example.png)
-<<<<<<< HEAD
-_Is this correct?! Looks odd. Better than before..._
-=======
+![Interaction term FNT](/assets/images/gPPI-interactionTerm_FNT-example.png)
 _Example of interaction term for False neutral threat (FNT) condition_
 
->>>>>>> d63d8d0229f819d005daa4e5301f5db9b0e22af8
