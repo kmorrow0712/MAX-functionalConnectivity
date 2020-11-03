@@ -27,8 +27,6 @@ Practice generating general psychophysiological interaction (gPPI) terms to expl
 
 ---
 
-## Extract timeseries from seed region(s)
-
 ### 1. Extract baseline from first level subject data
 
 First, need to extract the baseline which includes drifts, motion, and motion derivatives as output from `3dDeconvolve` using `3dSynthesize`
