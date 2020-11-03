@@ -4,24 +4,21 @@ title: "Creating gPPI interaction terms (practice)"
 date: 2020-11-02
 ---
 
-### Relevant details
+## Relevant details
 
-#### Dataset
+### Dataset
 MAX (N = 5)
 
-#### Seed region(s)
-###### left Crus II (cerebellum) <br>
-`SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz` <br>
-
+### Seed region(s)
+left Crus II (cerebellum) `SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz` <br>
 **transformations**
 1. Crus II multipled with [Buckner et al's](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3214121/) cognitive control network.
 2.    Intersection then multiplied with a [SUIT](http://www.diedrichsenlab.org/imaging/suit.htm) gray matter mask.
 
-
-#### Programs utilized
+### Programs utilized
 AFNI
 
-#### Goal
+### Goal
 Practice generating general psychophysiological interaction (gPPI) terms to explore functional connectivity between seed regions and all other voxels of the brain and how this relationship relates to task. </br>
 
 ### Info
@@ -30,9 +27,9 @@ Practice generating general psychophysiological interaction (gPPI) terms to expl
 
 ---
 
-### Extract timeseries from seed region(s)
+## Extract timeseries from seed region(s)
 
-##### 1. Extract baseline from first level subject data
+### 1. Extract baseline from first level subject data
 
 First, need to extract the baseline which includes drifts, motion, and motion derivatives as output from `3dDeconvolve` using `3dSynthesize`
 
@@ -40,10 +37,10 @@ First, need to extract the baseline which includes drifts, motion, and motion de
 -matrix ./"MAX"$subj"_Main_block_MR_uncensored_I.x1D" -select baseline -overwrite
 -prefix "$output"/MAX/"$subj"_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz``
 
-##### 2. Subtract baseline from preprocssed functional data
+### 2. Subtract baseline from preprocssed functional data
 With the baseline model extracted, we now need to subtract it from preprocessed functional data using `3dcalc`
 
-`` 3dcalc -a $proj_path"/dataset/preproc/MAX"$subj"/func2/ICA_AROMA/MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" -b ./"MAX"$subj_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz -prefix "$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz -expr 'a-b' -overwrite ``
+ 3dcalc -a $proj_path"/dataset/preproc/MAX"$subj"/func2/ICA_AROMA/MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" -b    ./"MAX"$subj_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz -prefix "$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz -expr 'a-b' -overwrite 
 
 ### 3. Extract time series from seed region & no baseline data
 
