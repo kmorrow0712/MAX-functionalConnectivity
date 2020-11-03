@@ -7,7 +7,7 @@
 MAX (N = 5)
 
 ### Seed region(s)
-#### left Crus II (cerebellum) <br>
+#### left Crus II (cerebellum)
 `SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz` <br>
 
 **transformations**
