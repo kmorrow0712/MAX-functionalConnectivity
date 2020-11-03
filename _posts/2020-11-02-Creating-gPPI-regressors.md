@@ -30,17 +30,22 @@ Practice generating general psychophysiological interaction (gPPI) terms to expl
 
 First, need to extract the baseline which includes drifts, motion, and motion derivatives as output from `3dDeconvolve` using `3dSynthesize`
 
-    3dSynthesize -cbucket ./MAX"$subj"_Main_block_MR_REML_beta_shockcensored_I.nii.gz
-    -matrix ./"MAX"$subj"_Main_block_MR_uncensored_I.x1D" -select baseline -overwrite
+    3dSynthesize -cbucket ./MAX"$subj"_Main_block_MR_REML_beta_shockcensored_I.nii.gz \
+    -matrix ./"MAX"$subj"_Main_block_MR_uncensored_I.x1D" \
+    -select baseline -overwrite \
     -prefix "$output"/MAX/"$subj"_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz
 
 ### 2. Subtract baseline from preprocssed functional data
 With the baseline model extracted, we now need to subtract it from preprocessed functional data using `3dcalc`
 
-    3dcalc -a $proj_path"/dataset/preproc/MAX"$subj"/func2/ICA_AROMA/MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" -b ./"MAX"$subj_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz -prefix "$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz -expr 'a-b' -overwrite
+    3dcalc -a $proj_path"/dataset/preproc/MAX"$subj"/func2/ICA_AROMA/MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" \
+    -b ./"MAX"$subj_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz -prefix "$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz \
+    -expr 'a-b' \
+    -overwrite \
 
 ### 3. Extract time series from seed region
-    3dROIstats -quiet -overwrite -mask /data/bswift-1/kmorrow/02-ROI_masks/SUIT_cerebellum_2mm/SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz $output"MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz" > \
+    3dROIstats -quiet -overwrite
+    -mask /data/bswift-1/kmorrow/02-ROI_masks/SUIT_cerebellum_2mm/SUIT_l-CrusII_YeoNetwork6_intersect_gm_2mm.nii.gz \ $output"MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz" > \
     $output"MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D"
 
 <fig>
@@ -66,7 +71,12 @@ We will downsample TRs from 1.25s to 0.05s (upsample rate of 25)
 
 _Reminder that these scripts are generally in a loop which can be seen in full in `/scripts` directory_
 
-    timing_tool.py -timing $proj_path/stim_times/"$regressors[$regressor_index]".txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX"$i_subj"/gPPI/"$regressors[$regressor_index]_upsample.txt" -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425
+    timing_tool.py
+    -timing $proj_path/stim_times/"$regressors[$regressor_index]".txt \
+    -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX"$i_subj"/gPPI/"$regressors[$regressor_index]_upsample.txt" \
+     -tr 0.05 \
+     -stim_dur 16.25 \
+     -min_frac 0.3 -run_len 425 425 425 425 425 425
 
 <fig>
   <img src="/assets/images/gPPI-upsampledReg-example.png" width="400" height="300" />
@@ -104,12 +114,15 @@ Resembles the hemodynamic response function at the new upsampled TR (0.05s)
 ### 7b. Deconvolve seed time seed timeseries with gamma function
 
 
-    3dTfitter -RHS "$seed_names[$seed_index]"_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D 012 -2
+    3dTfitter
+    -RHS "$seed_names[$seed_index]"_Seed_perRun_upsample.1D \
+    -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D \ "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D 012 -2
 
     1dtranspose "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D > "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D
 
 ### 8. De-mean neuronal timeseries
-    1d_tool.py -infile "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D -demean -write  "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D
+    1d_tool.py -infile "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D
+    -demean -write \ "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D
 
   <img src="/assets/images/gPPI-seedTimeseriesUpsampled_demeaned.png" width="400" height="300" />
 
@@ -129,7 +142,7 @@ Resembles the hemodynamic response function at the new upsampled TR (0.05s)
     waver -GAM \
     -peak 1 \
     -TR $sub_TR \
-    -input \ "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D -numout $noOfVol_perRun_upsample >  "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_perRun_upsampleT.1D
+    -input "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D -numout $noOfVol_perRun_upsample >  "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Conv_perRun_upsampleT.1D
 
 ### 11. Downsample to original TR (1.25s)
 
