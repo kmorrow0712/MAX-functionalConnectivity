@@ -1,0 +1,470 @@
+PATHs: Undefined variable.
+eval `twig2 -q afni-new`
+twig2 -q afni-new
+setenv PATH /cell_root/software/afni/new/sys:/cell_root/software/matlab/2019a/bin/:/homes/kmorrow/anaconda3/bin:/data/bswift-1/Pessoa_Lab/share/preproc/FSL/bin:/data/bswift-1/Pessoa_Lab/share/preproc/:/data/bswift-1/Pessoa_Lab/share/preproc/BrainSuite/bin:/data/bswift-1/Pessoa_Lab/share/preproc/FSL/bin:/data/bswift-1/Pessoa_Lab/share/preproc/c3d/bin:/data/bswift-1/Pessoa_Lab/share/preproc/ROBEX/:/data/bswift-1/Pessoa_Lab/share/preproc/mat_bin/:/cell_root/software/ants/new/sys/bin:/data/bswift-0/software/afni-19.1.21/:/cell_root/software/matlab/2019a/bin/:/data/bswift-1/Pessoa_Lab/share/preproc/FSL/bin:/cell_root/software/HPCC/scripts:/cell_root/software/matlab/2019a/bin/:/homes/kmorrow/anaconda3/bin:/data/bswift-1/Pessoa_Lab/share/preproc/FSL/bin:/data/bswift-1/Pessoa_Lab/share/preproc/:/data/bswift-1/Pessoa_Lab/share/preproc/BrainSuite/bin:/data/bswift-1/Pessoa_Lab/share/preproc/FSL/bin:/data/bswift-1/Pessoa_Lab/share/preproc/c3d/bin:/data/bswift-1/Pessoa_Lab/share/preproc/ROBEX/:/data/bswift-1/Pessoa_Lab/share/preproc/mat_bin/:/cell_root/software/ants/new/sys/bin:/data/bswift-0/software/afni-19.1.21/:/cell_root/software/matlab/2019a/bin/:/data/bswift-1/Pessoa_Lab/share/preproc/FSL/bin:/cell_root/software/fsl/5.0.10/sys/bin:/cell_root/software/afni/20.2.14/sys:/usr/local/slurm/16.05.1/bin:/usr/local/slurm/scripts:/cell_root/software/HPCC/scripts:/homes/kmorrow/bin/scripts:/homes/kmorrow/bin/linux/x86_64:/usr/local/scripts:/usr/local/bin:/usr/glue/bin:/usr/glue/sbin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/afsws/bin:.
+echo 104
+104
+set i_subj = `printf "%03d" $SLURM_ARRAY_TASK_ID`
+printf %03d 104
+echo Processing Subject: MAX104
+Processing Subject: MAX104
+set proj_path = /data/bswift-1/Pessoa_Lab/MAX
+set out_dir = /data/bswift-1/kmorrow/03-gPPI_testing
+if ( 104 == 007 || 104 == 010 || 104 == 019 ) then
+set nruns = 6
+endif
+@ final_run_counter = ( 6 - 1 )
+set seed_names = ( l-CrusII )
+@ no_Of_seeds = 1
+set regressors = ( FNT FNS FPT FPS )
+@ no_Of_regressors = 4
+set noOfVol_perRun = 340
+set Orig_TR = 1.25
+set sub_TR = 0.05
+set UpSampRate = 25
+@ noOfVol_perRun_upsample = ( 340 * 25 )
+cd /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI
+if ( 1 == 0 ) then
+if ( 104 == 007 || 104 == 010 || 104 == 019 ) then
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+timing_tool.py -timing /data/bswift-1/Pessoa_Lab/MAX/stim_times/FNT.txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425
+end
+timing_tool.py -timing /data/bswift-1/Pessoa_Lab/MAX/stim_times/FNS.txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425
+end
+timing_tool.py -timing /data/bswift-1/Pessoa_Lab/MAX/stim_times/FPT.txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425
+end
+timing_tool.py -timing /data/bswift-1/Pessoa_Lab/MAX/stim_times/FPS.txt -timing_to_1D /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt -tr 0.05 -stim_dur 16.25 -min_frac 0.3 -run_len 425 425 425 425 425 425
+end
+endif
+foreach seed_index ( `seq 1 1 $no_Of_seeds` )
+seq 1 1 1
+/bin/rm: No match.
+foreach run_index ( `seq 0 1 $final_run_counter` )
+seq 0 1 5
+set start_index1 = `expr $run_index \* $noOfVol_perRun`
+expr 0 * 340
+set end_index1 = `expr $run_index \* $noOfVol_perRun  +  $noOfVol_perRun - 1`
+expr 0 * 340 + 340 - 1
+echo 0
+0
+echo 339
+339
+set start_index2 = `expr $start_index1 \* $UpSampRate`
+expr 0 * 25
+set end_index2 = `expr $end_index1 \* $UpSampRate + $UpSampRate - 1`
+expr 339 * 25 + 25 - 1
+echo 0
+0
+echo 8499
+8499
+if ( 1 == 1 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/output/MAX104_l-CrusII_seed_NoBaseline_avg.1D'{0..339}[0]'
+else
+1dUpsample 25 l-CrusII_Seed_perRun.1D
+3dTfitter -RHS l-CrusII_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D l-CrusII_Seed_Neur_perRun_upsample.1D 012 -2
+++ 3dTfitter: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: RWCox
+ + default penalty scale factor=251.719
+++ Fit worked on all 1 voxels attempted
+ + Writing FALTUNG dataset: l-CrusII_Seed_Neur_perRun_upsample.1D
+++ Total CPU time = 0.0 s
+1dtranspose l-CrusII_Seed_Neur_perRun_upsample.1D
+1d_tool.py -infile l-CrusII_Seed_Neur_perRun_upsampleT.1D -demean -write l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+if ( 0 == 0 ) then
+touch l-CrusII_Seed_FNT_Conv_allRuns.1D
+touch l-CrusII_Seed_Conv_allRuns.1D
+endif
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt'{0..8499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D
+end
+if ( 0 == 0 ) then
+touch l-CrusII_Seed_FNS_Conv_allRuns.1D
+touch l-CrusII_Seed_Conv_allRuns.1D
+endif
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt'{0..8499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D
+end
+if ( 0 == 0 ) then
+touch l-CrusII_Seed_FPT_Conv_allRuns.1D
+touch l-CrusII_Seed_Conv_allRuns.1D
+endif
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt'{0..8499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D
+end
+if ( 0 == 0 ) then
+touch l-CrusII_Seed_FPS_Conv_allRuns.1D
+touch l-CrusII_Seed_Conv_allRuns.1D
+endif
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt'{0..8499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D
+end
+end
+set start_index1 = `expr $run_index \* $noOfVol_perRun`
+expr 1 * 340
+set end_index1 = `expr $run_index \* $noOfVol_perRun  +  $noOfVol_perRun - 1`
+expr 1 * 340 + 340 - 1
+echo 340
+340
+echo 679
+679
+set start_index2 = `expr $start_index1 \* $UpSampRate`
+expr 340 * 25
+set end_index2 = `expr $end_index1 \* $UpSampRate + $UpSampRate - 1`
+expr 679 * 25 + 25 - 1
+echo 8500
+8500
+echo 16999
+16999
+if ( 1 == 1 ) then
+l-CrusII_Seed_perRun.1D: File exists.
+else
+l-CrusII_Seed_perRun_upsample.1D: File exists.
+3dTfitter -RHS l-CrusII_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D l-CrusII_Seed_Neur_perRun_upsample.1D 012 -2
+++ 3dTfitter: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: RWCox
+ + default penalty scale factor=251.719
+++ Fit worked on all 1 voxels attempted
+ + Writing FALTUNG dataset: l-CrusII_Seed_Neur_perRun_upsample.1D
+++ Total CPU time = 0.0 s
+l-CrusII_Seed_Neur_perRun_upsampleT.1D: File exists.
+1d_tool.py -infile l-CrusII_Seed_Neur_perRun_upsampleT.1D -demean -write l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D
+** output file 'l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D' exists and 'overwrite' not set...
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+if ( 1 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt'{8500..16999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D
+end
+if ( 1 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt'{8500..16999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D
+end
+if ( 1 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt'{8500..16999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D
+end
+if ( 1 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt'{8500..16999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D
+end
+end
+set start_index1 = `expr $run_index \* $noOfVol_perRun`
+expr 2 * 340
+set end_index1 = `expr $run_index \* $noOfVol_perRun  +  $noOfVol_perRun - 1`
+expr 2 * 340 + 340 - 1
+echo 680
+680
+echo 1019
+1019
+set start_index2 = `expr $start_index1 \* $UpSampRate`
+expr 680 * 25
+set end_index2 = `expr $end_index1 \* $UpSampRate + $UpSampRate - 1`
+expr 1019 * 25 + 25 - 1
+echo 17000
+17000
+echo 25499
+25499
+if ( 1 == 1 ) then
+l-CrusII_Seed_perRun.1D: File exists.
+else
+l-CrusII_Seed_perRun_upsample.1D: File exists.
+3dTfitter -RHS l-CrusII_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D l-CrusII_Seed_Neur_perRun_upsample.1D 012 -2
+++ 3dTfitter: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: RWCox
+ + default penalty scale factor=251.719
+++ Fit worked on all 1 voxels attempted
+ + Writing FALTUNG dataset: l-CrusII_Seed_Neur_perRun_upsample.1D
+++ Total CPU time = 0.0 s
+l-CrusII_Seed_Neur_perRun_upsampleT.1D: File exists.
+1d_tool.py -infile l-CrusII_Seed_Neur_perRun_upsampleT.1D -demean -write l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D
+** output file 'l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D' exists and 'overwrite' not set...
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+if ( 2 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt'{17000..25499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D
+end
+if ( 2 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt'{17000..25499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D
+end
+if ( 2 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt'{17000..25499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D
+end
+if ( 2 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt'{17000..25499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D
+end
+end
+set start_index1 = `expr $run_index \* $noOfVol_perRun`
+expr 3 * 340
+set end_index1 = `expr $run_index \* $noOfVol_perRun  +  $noOfVol_perRun - 1`
+expr 3 * 340 + 340 - 1
+echo 1020
+1020
+echo 1359
+1359
+set start_index2 = `expr $start_index1 \* $UpSampRate`
+expr 1020 * 25
+set end_index2 = `expr $end_index1 \* $UpSampRate + $UpSampRate - 1`
+expr 1359 * 25 + 25 - 1
+echo 25500
+25500
+echo 33999
+33999
+if ( 1 == 1 ) then
+l-CrusII_Seed_perRun.1D: File exists.
+else
+l-CrusII_Seed_perRun_upsample.1D: File exists.
+3dTfitter -RHS l-CrusII_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D l-CrusII_Seed_Neur_perRun_upsample.1D 012 -2
+++ 3dTfitter: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: RWCox
+ + default penalty scale factor=251.719
+++ Fit worked on all 1 voxels attempted
+ + Writing FALTUNG dataset: l-CrusII_Seed_Neur_perRun_upsample.1D
+++ Total CPU time = 0.0 s
+l-CrusII_Seed_Neur_perRun_upsampleT.1D: File exists.
+1d_tool.py -infile l-CrusII_Seed_Neur_perRun_upsampleT.1D -demean -write l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D
+** output file 'l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D' exists and 'overwrite' not set...
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+if ( 3 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt'{25500..33999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D
+end
+if ( 3 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt'{25500..33999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D
+end
+if ( 3 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt'{25500..33999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D
+end
+if ( 3 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt'{25500..33999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D
+end
+end
+set start_index1 = `expr $run_index \* $noOfVol_perRun`
+expr 4 * 340
+set end_index1 = `expr $run_index \* $noOfVol_perRun  +  $noOfVol_perRun - 1`
+expr 4 * 340 + 340 - 1
+echo 1360
+1360
+echo 1699
+1699
+set start_index2 = `expr $start_index1 \* $UpSampRate`
+expr 1360 * 25
+set end_index2 = `expr $end_index1 \* $UpSampRate + $UpSampRate - 1`
+expr 1699 * 25 + 25 - 1
+echo 34000
+34000
+echo 42499
+42499
+if ( 1 == 1 ) then
+l-CrusII_Seed_perRun.1D: File exists.
+else
+l-CrusII_Seed_perRun_upsample.1D: File exists.
+3dTfitter -RHS l-CrusII_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D l-CrusII_Seed_Neur_perRun_upsample.1D 012 -2
+++ 3dTfitter: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: RWCox
+ + default penalty scale factor=251.719
+++ Fit worked on all 1 voxels attempted
+ + Writing FALTUNG dataset: l-CrusII_Seed_Neur_perRun_upsample.1D
+++ Total CPU time = 0.0 s
+l-CrusII_Seed_Neur_perRun_upsampleT.1D: File exists.
+1d_tool.py -infile l-CrusII_Seed_Neur_perRun_upsampleT.1D -demean -write l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D
+** output file 'l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D' exists and 'overwrite' not set...
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+if ( 4 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt'{34000..42499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D
+end
+if ( 4 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt'{34000..42499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D
+end
+if ( 4 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt'{34000..42499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D
+end
+if ( 4 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt'{34000..42499}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D
+end
+end
+set start_index1 = `expr $run_index \* $noOfVol_perRun`
+expr 5 * 340
+set end_index1 = `expr $run_index \* $noOfVol_perRun  +  $noOfVol_perRun - 1`
+expr 5 * 340 + 340 - 1
+echo 1700
+1700
+echo 2039
+2039
+set start_index2 = `expr $start_index1 \* $UpSampRate`
+expr 1700 * 25
+set end_index2 = `expr $end_index1 \* $UpSampRate + $UpSampRate - 1`
+expr 2039 * 25 + 25 - 1
+echo 42500
+42500
+echo 50999
+50999
+if ( 1 == 1 ) then
+l-CrusII_Seed_perRun.1D: File exists.
+else
+l-CrusII_Seed_perRun_upsample.1D: File exists.
+3dTfitter -RHS l-CrusII_Seed_perRun_upsample.1D -FALTUNG /data/bswift-1/kmorrow/03-gPPI_testing/GammaHR_TR05.1D l-CrusII_Seed_Neur_perRun_upsample.1D 012 -2
+++ 3dTfitter: AFNI version=AFNI_17.2.10 (Aug 30 2017) [64-bit]
+++ Authored by: RWCox
+ + default penalty scale factor=251.719
+++ Fit worked on all 1 voxels attempted
+ + Writing FALTUNG dataset: l-CrusII_Seed_Neur_perRun_upsample.1D
+++ Total CPU time = 0.0 s
+l-CrusII_Seed_Neur_perRun_upsampleT.1D: File exists.
+1d_tool.py -infile l-CrusII_Seed_Neur_perRun_upsampleT.1D -demean -write l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D
+** output file 'l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D' exists and 'overwrite' not set...
+foreach regressor_index ( `seq 1 1 $no_Of_regressors` )
+seq 1 1 4
+if ( 5 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNT_upsample.txt'{42500..50999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNT_Conv_perRun_upsampleT.1D
+end
+if ( 5 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FNS_upsample.txt'{42500..50999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FNS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FNS_Conv_perRun_upsampleT.1D
+end
+if ( 5 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPT_upsample.txt'{42500..50999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPT_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPT_Conv_perRun_upsampleT.1D
+end
+if ( 5 == 0 ) then
+1dcat /data/bswift-1/kmorrow/03-gPPI_testing/dataset/regressors/MAX104/gPPI/FPS_upsample.txt'{42500..50999}'
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+1deval -a l-CrusII_Seed_Neur_perRun_upsampleT_demean.1D -b tmp_demean.1D -expr a*b
+/bin/rm -i -f tmp.1D tmp_demean.1D
+waver -GAM -peak 1 -TR 0.05 -input l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D -numout 8500
+1dcat l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D{0..$(25)}
+/bin/rm -i -f l-CrusII_Seed_FPS_Neur_perRun_upsampleT.1D l-CrusII_Seed_FPS_Conv_perRun_upsampleT.1D
+end
+end
+end

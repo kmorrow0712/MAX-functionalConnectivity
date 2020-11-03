@@ -1,0 +1,12 @@
+PATHs: Undefined variable.
+102
+102
+++ 3dSynthesize: AFNI version=AFNI_19.1.21 (Jun 18 2019) [64-bit]
+++ Authored by: RW Cox
+++ Output has 2016 time points at TR=1.25
+++ Calculating: ...................................................!
+++ Output dataset /data/bswift-1/kmorrow/03-gPPI_testing/output//MAX102_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz
+++ CPU time=0.00 s ; Elapsed=203.82 s
+++ 3dcalc: AFNI version=AFNI_19.1.21 (Jun 18 2019) [64-bit]
+++ Authored by: A cast of thousands
+++ Output dataset /data/bswift-1/kmorrow/03-gPPI_testing/output//MAX102_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz
