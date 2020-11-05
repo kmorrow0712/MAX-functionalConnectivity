@@ -30,10 +30,9 @@
 ## Visualizing the model
 An example from one subject
 
-![fig1](/assets/images/Max_basicModel_gPPI.png)
 
-
-![fig2](/assets/images/Max_basicModel_motionParams.png)
+<img src="assets/images/Max_basicModel_gPPI.png" width="500" height="600" />
+<img src="assets/images/Max_basicModel_motionParams.png" width="500" height="600" />
 
 ## Contrasts
 Comparing gPPI interaction regressors from different block types to see how relationship between seed region and all other voxels compares by block type.
