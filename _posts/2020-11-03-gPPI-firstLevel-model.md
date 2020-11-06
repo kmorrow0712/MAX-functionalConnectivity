@@ -1,7 +1,7 @@
 # gPPI basic first level model
 
-| Regressor                   | File name                                    | Label                  | Description                                                                |
-| :-------------------------- | :------------------------------------------- | :--------------------- | :------------------------------------------------------------------------- |
+| Regressor                   | File name                                    | Label                             | Description                                                                |
+| :-------------------------- | :------------------------------------------- | :-------------------------------- | :------------------------------------------------------------------------- |
 | left CrusII seed timeseries | `MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D` | seed                   | Extracted seed time series that was used to created gPPI interaction terms |
 | FNS*seed                    | `l-CrusII_Seed_FNS_Conv_allRuns.1D`          | falseNeuSafe-seed      | Interaction between False Neutral Safe blocks and seed time series         |
 | FNS                         | `FNS.txt`                                    | falseNeuSafe           | False (no shock) Neutral Safe block                                        |
