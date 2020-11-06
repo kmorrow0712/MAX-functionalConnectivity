@@ -24,6 +24,7 @@
 | r_RPS                       | `rate_RPS.txt`                               | respond-realPosSafe    | Anxiety rating post RPS block                                              |
 | r_RPT                       | `rate_RPT.txt`                               | respond-realPosThreat  | Anxiety rating post RPT block                                              |
 
+$Y$
 
 ## Visualizing the model
 An example from one subject
