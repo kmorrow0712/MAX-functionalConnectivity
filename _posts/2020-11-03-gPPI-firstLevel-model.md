@@ -1,9 +1,9 @@
 # gPPI basic first level model
 
 
- | Regressor | File name | Label | Description |
- | --------- | --------- | ----- | ----------- |
- | left CrusII seed timeseries      | Title       |
+ | Regressor                   | File name                                    | Label | Description |
+ | --------------------------- | -------------------------------------------- | ----- | ----------- |
+ | left CrusII seed timeseries | `MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D` |
  | Paragraph   | Text        |
 
 
