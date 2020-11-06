@@ -1,9 +1,9 @@
 # gPPI basic first level model
 
 
- | Syntax      | Description |
- | ----------- | ----------- |
- | Header      | Title       |
+ | Regressor | File name | Label | Description |
+ | --------- | --------- | ----- | ----------- |
+ | left CrusII seed timeseries      | Title       |
  | Paragraph   | Text        |
 
 
