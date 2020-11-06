@@ -4,7 +4,7 @@
 
 ## Regressor table
 | Regressor   | File name   | Label | Description   |
-| ----------- | ----------- | ----- | ------------- |
+| --- | --- | --- | --- |
 | left CrusII seed timeseries | `MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D` | seed | Extracted seed time series that was used to created gPPI interaction terms  |
 | FNS*seed  | `l-CrusII_Seed_FNS_Conv_allRuns.1D` | falseNeuSafe-seed | Interaction between False Neutral Safe blocks and seed time series |
 | FNS  | `FNS.txt` | falseNeuSafe  | False (no shock) Neutral Safe block |
@@ -31,8 +31,9 @@
 An example from one subject
 
 
-<img src="assets/images/Max_basicModel_gPPI.png" width="500" height="600" />
-<img src="assets/images/Max_basicModel_motionParams.png" width="500" height="600" />
+<img src="/assets/images/MAX_basicModel_gPPI.png" width="600" height="600" />
+
+<img src="/assets/images/MAX_basicModel_motionParams.png" width="600" height="600" />
 
 ## Contrasts
 Comparing gPPI interaction regressors from different block types to see how relationship between seed region and all other voxels compares by block type.
