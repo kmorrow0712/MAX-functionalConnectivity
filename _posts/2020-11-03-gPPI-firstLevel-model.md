@@ -1,4 +1,30 @@
 # gPPI basic first level model
+| Regressor                   | File name                                  | Label                  | Description                                                                |
+|-----------------------------|--------------------------------------------|------------------------|----------------------------------------------------------------------------|
+| left CrusII seed timeseries | MAX"$subj"_l-CrusII_seed_NoBaseline_avg.1D | seed                   | Extracted seed time series that was used to created gPPI interaction terms |
+| FNS*seed                    | l-CrusII_Seed_FNS_Conv_allRuns.1D          | falseNeuSafe-seed      | Interaction between False Neutral Safe blocks and seed time series         |
+| FNS                         | FNS.txt                                    | falseNeuSafe           | False (no shock) Neutral Safe block                                        |
+| FNT*seed                    | l-CrusII_Seed_FNS_Conv_allRuns.1D          | falseNeuThreat-seed    | Interaction between False Neutral Threat blocks and seed time series       |
+| FNT                         | FNT.txt                                    | falseNeuThreat         | False (no shock) Neutral Threat block                                      |
+| FPS*seed                    | l-CrusII_Seed_FPS_Conv_allRuns.1D          | falsePosSafe-seed      | Interaction between False Positive Safe blocks and seed time series        |
+| FNT                         | FNT.txt                                    | falseNeuThreat         | False (no shock)Threat Safe block                                          |
+| FPT*seed                    | l-CrusII_Seed_FPT_Conv_allRuns.1D          | falsePosThreat         | Interaction between False Positive Threat blocks and seed time series      |
+| FPT                         | FPT.txt                                    | falsePosThreat         | False (no shock) Positive Safe block                                       |
+| RNS                         | RNS.txt                                    | realNeuSafe            | Real (touch) Neutral Safe block                                            |
+| RNT                         | RNT.txt                                    | realNeuThreat          | Real (shock) Neutral Threat block                                          |
+| RPS                         | RPS.txt                                    | realPosSafe            | Real (touch) Positive Safe block                                           |
+| RPT                         | RPT.txt                                    | realPosThreat          | Real (shock) Positive Threat block                                         |
+| r_FNS                       | rate_FNS.txt                               | respond-falseNeuSafe   | Anxiety rating post FNS block                                              |
+| r_FNT                       | rate_FNT.txt                               | respond-falseNeuThreat | Anxiety rating post FNT block                                              |
+| r_FPS                       | rate_FPS.txt                               | respond-falsePosSafe   | Anxiety rating post FPS block                                              |
+| r_FPT                       | rate_FPT.txt                               | respond-falsePosThreat | Anxiety rating post FPT block                                              |
+| r_RNS                       | rate_RNS.txt                               | respond-realNeuSafe    | Anxiety rating post RNS block                                              |
+| r_RNT                       | rate_RNT.txt                               | respond-realNeuThreat  | Anxiety rating post RNT block                                              |
+| r_RPS                       | rate_RPS.txt                               | respond-realPosSafe    | Anxiety rating post RPS block                                              |
+| r_RPT                       | rate_RPT.txt                               | respond-realPosThreat  | Anxiety rating post RPT block                                              |
+
+
+
 
 
  | Regressor                      | File name                                       | Label | Description                                                                |
