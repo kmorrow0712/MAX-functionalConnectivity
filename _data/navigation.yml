@@ -2,3 +2,5 @@
   path: /
 - title: About
   path: /about/
+- title: Posts
+  path: /_posts
