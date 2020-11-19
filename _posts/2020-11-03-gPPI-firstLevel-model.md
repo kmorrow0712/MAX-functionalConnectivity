@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Test
 ---
 
 # gPPI basic first level model
