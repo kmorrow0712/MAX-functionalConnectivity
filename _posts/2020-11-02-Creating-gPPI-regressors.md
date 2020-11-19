@@ -1,3 +1,7 @@
+---
+layout: default
+title: 01 - Creating gPPI regressors
+---
 
 # Create gPPI regressors -- practice
 ---
