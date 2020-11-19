@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # gPPI basic first level model
 
 | Regressor                   | File name                                                   | Label                                   | Description                                                                |
