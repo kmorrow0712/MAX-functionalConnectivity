@@ -1,7 +1,7 @@
 ---
 layout: default
-title: gPPI basic first level model
----
+title: 02 - gPPI basic first level model
+--- 
 
 # gPPI basic first level model
 
