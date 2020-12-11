@@ -1,7 +1,7 @@
 ---
 layout: default
 title: 02 - gPPI basic first level model
---- 
+---
 
 # gPPI basic first level model
 
@@ -51,6 +51,8 @@ Comparing gPPI interaction regressors from different block types to see how rela
 `False Neutral Threat` `False Positive Threat` - `False Neutral Safe` - `False Positive Safe` <br>
 _Overall Threat versus Safe_
 
+`False Positive Threat + False Positive Safe -False Neutral Threat -False Neutral Safe` <br>
+_Are there any differences between positive and neutral runs? 
 
 
 ## Script
