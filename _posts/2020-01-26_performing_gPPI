@@ -1,0 +1,161 @@
+
+### Performing gPPI analysis
+
+Generalized psychophysicalocal interaction (gPPI) assesses functional connectivity between a chosen seed region and all other voxels of the brain. The main advantage of using this techinque is that is allows the user to explore how the time series of each voxel relates to both the task and time series of the seed region, thus the psychophysiological interaction. Unlike PPI analysis, generalized PPI utilizes interaction terms for all task conditions and the given seed region.
+
+#### Extracting the time series of a seed region
+The first step in running a gPPI analysis is extracting the seed region time series data. To ensure that the extracted time series is related to the experimental tasks and not noise (e.g., scanner drift, participant motion), the time series is extracted from preprocessed functional data that has the baseline removed. All three of these steps can be executed using AFNI commands.
+
+1. Extract participant baseline from timeseries using 3dSynthesize
+
+```
+3dSynthesize -cbucket ./"MAX"$subj"_Main_block_MR_REML_beta_shockcensored_I.nii.gz" \
+-matrix ./"MAX"$subj"_Main_block_MR_uncensored_I.x1D" \
+-select baseline \
+-overwrite \
+-prefix MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz
+
+```
+
+2. Subtract the newly extracted baseline from final preprocessed functional data using 3dcalc
+
+```
+#3dcalc -a MAX"$subj"_EP_Main_TR_MNI_2mm_SI_denoised.nii.gz" \
+-b "MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_baselineModel.nii.gz" \
+-prefix MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz \
+-expr 'a-b' \
+-overwrite
+
+```
+3. Get average time series (no baseline) from ROIs using 3dROIstats
+
+```
+3dROIstats -quiet -overwrite -mask "/data/bswift-1/kmorrow/02-ROI_masks/MAX-FC_ROIs/"$ROI_file"" \
+$output"/MAX"$subj"_EP_Main_TR_MNI_2mm_I_denoised_NoBaseline.nii.gz" > $output"/MAX"$subj"_l-BA17-seed_NoBaseline_avg.1D"
+
+```
+
+<fig>
+  <img src="/Users/kellymorrow/github/ongoingProjects/assets/images/l-BA17_timeseries.png" width="400" height="300" />
+  <figcaption>Example of extracted time series for left BA17 ROI from MAX101</figcaption>
+</fig>
+
+
+
+
+#### Creating gPPI interaction terms
+With the average time series seed data extracted, gPPI interaction terms can be created with condition timing files. First, these files need to be upsampled to a higher sampling rate. Next, the seed region needs to be deconvolved to reflect neural data (i.e., "spike") rather than BOLD signal.  The deconvolved,upsampled seed data and upsampled regressor time  files are then multipled to create the interaction terms. Once created, the interaction terms are convolved with the hemodynamic response function (HRF), and downsampled back to the original TR.
+
+1. Upsample regressor timing files using 3dupsample
+This particular example is a block condition that lasts for 16.25 seconds.
+
+```
+timing_tool.py -timing $proj_path/stim_times_neutral/MAX"$i_subj"/"$regressors[$regressor_index]".txt -timing_to_1D $out_path/dataset/regressors/MAX"$i_subj"/gPPI/"$regressors[$regressor_index]"_upsample.txt \
+                     -tr 0.05 -stim_dur 16.25 -min_frac 0.3            \
+                     -run_len 425 425 425
+
+```
+
+2. Get seed region data per run
+Separate the demeaned seed region data by run
+
+```
+1dcat $out_path/dataset/demeaned_func/MAX"$i_subj"/"MAX"$i_subj"_l-BA17-seed_NoBaseline_avg.1D'{$start_index1..$end_index1}'"> "$seed_names[$seed_index]"_Seed_perRun.1D
+
+```
+
+3. Upsample the seed data
+
+```
+1dUpsample "$UpSampRate" "$seed_names[$seed_index]"_Seed_perRun.1D > "$seed_names[$seed_index]"_Seed_perRun_upsample.1D
+
+```
+
+4. Deconvolve the seed timeseries data to neuronal time series
+```
+3dTfitter -RHS "$seed_names[$seed_index]"_Seed_perRun_upsample.1D -FALTUNG $out_path/GammaHR_TR05.1D "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D 012 -2
+1dtranspose "$seed_names[$seed_index]"_Seed_Neur_perRun_upsample.1D > "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D
+```
+
+4. Demean the neuronal time series
+By de-meaning the time series, collinearity between the interaction term and simple effects is reduced.
+
+```
+1d_tool.py -infile "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT.1D -demean -write "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D
+```
+
+5. Create interaction terms
+
+```
+1dcat $out_path/dataset/regressors/MAX"$i_subj"/gPPI/""$regressors[$regressor_index]"_upsample.txt'{$start_index2..$end_index2}'" > tmp.1D
+
+
+1d_tool.py -infile tmp.1D -demean -write tmp_demean.1D
+```
+
+Create interaction term that is mean centered
+```
+1deval -a "$seed_names[$seed_index]"_Seed_Neur_perRun_upsampleT_demean.1D  -b tmp_demean.1D \
+-expr 'a*b' > "$seed_names[$seed_index]"_Seed_"$regressors[$regressor_index]"_Neur_perRun_upsampleT.1D
+```
+<fig>
+  <img src="/Users/kellymorrow/github/ongoingProjects/assets/images/l-BA17_FNT.png" width="400" height="300" />
+  <figcaption>Example of interaction term of FNT condition and left BA17 ROI from MAX101</figcaption>
+</fig>
+
+
+#### First level model using 3dDeconvolve
+Once interaction terms are created, a subject level general linear model that includes interaction terms, seed timeseries, and condition terms can be used to assess functional connectivity.
+
+Here, there are four simple block conditions where participants are either under threat of shock or "safe" where participants only recieved a touch stimulus. After each block, participants rate how anxious they felt during the block for 2 seconds. "Real" blocks are blocks where participants were actually stimulated(we will censor shock events), and "Fake" refer to blocks where participants did not recieve any stimulation. Codes are as follows:
+
+FNT = False neutral Threat
+FNS = False neutral Safe
+RNT = Real neutral Threat
+RNS = Real neutral safe
+
+Contrasts that are included are threat versus safe (+FNT +RNT -FNS -RNS), +FNT -FNS, +RNT -RNS
+
+```
+3dDeconvolve -overwrite -input "$input" \
+    -mask /data/bswift-1/Pessoa_Lab/share/templates/MNI152_T1_2mm_brain_GM_02182017.nii.gz \
+		-polort A \
+		-local_times \
+		-concat $proj_path/dataset/preproc/MAX"$subj"/func_neutral/runConcatInfo.1D \
+		-noFDR \
+		-num_stimts 17 \
+		-censor "$fileCensMotionAndShock" \
+		-stim_times 1 "$stim_path"/FNS.txt 'BLOCK(16.25,1)' -stim_label 1 FNS \
+ 		-stim_times 2 "$stim_path"/FNT.txt 'BLOCK(16.25,1)' -stim_label 2 FNT \
+ 		-stim_times 3 "$stim_path"/RNS.txt 'BLOCK(16.25,1)' -stim_label 3 RNS \
+		-stim_times 4 "$stim_path"/RNT.txt 'BLOCK(16.25,1)' -stim_label 4 RNT \
+ 		-stim_times 5 "$stim_path"/rate_FNS.txt 'BLOCK(2,1)' -stim_label 5 r_FNS \
+ 		-stim_times 6 "$stim_path"/rate_FNT.txt 'BLOCK(2,1)' -stim_label 6 r_FNT \
+ 		-stim_times 7 "$stim_path"/rate_RNS.txt 'BLOCK(2,1)' -stim_label 7 r_RNS \
+		-stim_times 8 "$stim_path"/rate_RNT.txt 'BLOCK(2,1)' -stim_label 8 r_RNT \
+    -stim_file 9 "$gPPI_path"/dataset/demeaned_func/MAX"$subj"/MAX"$subj"_l-BA17-seed_NoBaseline_avg.1D -stim_label 9 l-BA17 \
+    -stim_file 10 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_FNS_Conv_allRuns.1D -stim_label 10 gPPI_FNS \
+    -stim_file 11 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_FNT_Conv_allRuns.1D -stim_label 11 gPPI_FNT \
+    -stim_file 12 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_RNS_Conv_allRuns.1D -stim_label 12 gPPI_RNS \
+    -stim_file 13 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_RNT_Conv_allRuns.1D -stim_label 13 gPPI_RNT \
+    -stim_file 14 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_rate_FNS_Conv_allRuns.1D -stim_label 14 gPPI_rate_FNS \
+    -stim_file 15 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_rate_FNT_Conv_allRuns.1D -stim_label 15 gPPI_rate_FNT \
+    -stim_file 16 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_rate_RNS_Conv_allRuns.1D -stim_label 16 gPPI_rate_RNS \
+    -stim_file 17 "$gPPI_path"/dataset/regressors/MAX"$subj"/gPPI/l-BA17_Seed_rate_RNT_Conv_allRuns.1D -stim_label 17 gPPI_rate_RNT \
+ 		-ortvec "$fileRawMotion"'[1..6]' 'MotionParam' \
+    -ortvec "$fileDerMotion"'[0..5]' 'MotionParamDerv' \
+    -cbucket "$out"/"MAX"$subj"_Main_block_MR_gPPI_l-BA17_betas.nii.gz" \
+		-xsave \
+		-num_glt 4 \
+    -gltsym "SYM: gPPI_FNT -gPPI_FNS" -glt_label 1 gPPI_FNTvsFNS \
+    -gltsym "SYM: gPPI_RNT -gPPI_RNS" -glt_label 2 gPPI_RNTvsRNS \
+    -gltsym "SYM: gPPI_FNT gPPI_RNT -gPPI_FNS -gPPI_RNS" -glt_label 3 gPPI_threat_vs_safe \
+		-x1D "$out"/"MAX"$subj"_Main_block_MR_gPPI_r-BLBM_AMYG.x1D" \
+		-x1D_uncensored "$out"/"MAX"$subj"_Main_block_MR_uncensored_gPPI_l-BA17.x1D" \
+    -tout -bucket "$out"/"MAX"$subj"_Main_block_gPPI_l-BA17.nii.gz"
+```
+
+<fig>
+  <img src="/Users/kellymorrow/github/ongoingProjects/assets/images/l-BA17_blockModel.png" width="600" height="700" />
+  <figcaption>Simple block design first level model from example subject. </figcaption>
+</fig>
