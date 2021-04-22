@@ -1,0 +1,38 @@
+## Foray in fMRI quality assessments
+There are many structural and functional quality measures (often called image quality metrics or IQMs) for functional MRI data. Most of these measures are **no reference metrics**, meaning that there is no ground truth in what a value *should* be. 
+
+For instance, how do you know if your dataset is "good"? Could it be that all of your datapoints are clustered, thus seemingly OK, but are actually bad metric values? 
+
+`MRIQA` provides great visualization of a multitude of metrics, but it can be tough to answer these questions by just looking. Looking is subjective!
+
+Thus, I am seeking ways to better quantify these so-called no reference metrics. 
+
+------
+
+### Framewise displacement
+
+**framewise displacement:** timeseries index of overall movement over time. 
+
+Framewise displacement seems to be the mostly common used QA metric for excluding functional data with excessive motion. Oftentimes researchers will use a threshold criteria of FD < 0.2mm and either censor these timepoints or exclude participants if a particular percentage of their data exceed the threshold.
+
+* Assessing framewise displacement is really important for all datasets, but especially functional connectivity studies.
+
+* Should inspect average FD and subject distributions
+
+* Typical thresholds for task fMRI are anywhere between 0.3 and 0.5mm, resting state fMRI typically go for more conservative thresholds (generally 0.2mm)
+    * If a participant has 30% of their data over this threshold, it is probably good to exclude their data.
+        * Here would be ~ 3 runs.
+
+----
+
+### GCOR
+Calculate the average correlation of each voxel with the global signal. If values are highly positive, likely being very influenced by motion. 
+
+* CONN toolbox is cool because it will show you the distribution of this correlation pre- and post- denoising process. 
+* GCOR seen in `mriqc` is before denoising, so may not be grounds for elimination. You cannot determine if data can be "saved" through denoising, but high values are a flag to keep an eye on the data after denoising.
+
+
+
+
+
+
